@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>給 jyun 的小卡片</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+        :root { --ink: #5f5364; --pink: #ff9b9b; --yellow: #ffe28a; --paper: #fffdf7; }
+        * { box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            color: var(--ink);
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #dff4ff, #fff1d2 52%, #ffe1ea);
+        }
+        .page { position: relative; display: grid; min-height: 100vh; place-items: center; padding: 24px; }
+        .dot { position: fixed; width: 18px; height: 18px; border-radius: 50%; background: var(--yellow); opacity: .8; animation: bob 5s ease-in-out infinite; }
+        .dot:nth-child(1) { top: 15%; left: 12%; }
+        .dot:nth-child(2) { top: 24%; right: 14%; width: 11px; height: 11px; background: var(--pink); animation-delay: -2s; }
+        .dot:nth-child(3) { bottom: 15%; left: 17%; width: 12px; height: 12px; background: #b9e5c1; animation-delay: -3s; }
+        .dot:nth-child(4) { right: 18%; bottom: 19%; width: 20px; height: 20px; background: #c8c2f5; animation-delay: -1s; }
+        .card {
+            position: relative;
+            width: min(100%, 650px);
+            padding: clamp(30px, 7vw, 60px);
+            border: 3px solid rgba(255, 155, 155, .42);
+            border-radius: 30px;
+            background: rgba(255, 253, 247, .9);
+            box-shadow: 0 22px 55px rgba(95, 83, 100, .18);
+            text-align: center;
+            animation: arrive .7s ease-out both;
+        }
+        .badge { position: absolute; top: 24px; right: 25px; padding: 6px 12px; border: 2px dashed #f19b72; border-radius: 12px; color: #de8267; font-size: .85rem; transform: rotate(7deg); }
+        .eyebrow { margin: 0 0 5px; color: #e58686; font-family: 'Baloo 2', sans-serif; font-size: 1.2rem; letter-spacing: .08em; }
+        h1 { margin: 0; color: #e4777b; font-family: 'Baloo 2', sans-serif; font-size: clamp(3rem, 12vw, 5.5rem); line-height: .95; }
+        .subtitle { margin: 14px 0 25px; font-size: 1.05rem; }
+        .cat { position: relative; width: 132px; height: 108px; margin: 8px auto 28px; border-radius: 48% 48% 42% 42%; background: #ffbd86; box-shadow: 0 9px 0 #f19b72; }
+        .cat::before, .cat::after { position: absolute; top: -25px; width: 45px; height: 45px; border-radius: 10px 32px 8px 32px; background: #ffbd86; content: ''; }
+        .cat::before { left: 8px; transform: rotate(25deg); }
+        .cat::after { right: 8px; transform: rotate(65deg); }
+        .face { position: absolute; inset: 0; z-index: 1; }
+        .face::before, .face::after { position: absolute; top: 48px; width: 10px; height: 13px; border-radius: 50%; background: var(--ink); content: ''; }
+        .face::before { left: 38px; }
+        .face::after { right: 38px; }
+        .nose { position: absolute; top: 67px; left: 50%; width: 10px; height: 7px; border-radius: 50%; background: #e57785; transform: translateX(-50%); }
+        .nose::after { position: absolute; top: 7px; left: 0; width: 10px; height: 8px; border-bottom: 2px solid var(--ink); border-radius: 50%; content: ''; }
+        .message { min-height: 76px; margin: 0 auto 24px; padding: 18px 20px; border-radius: 17px; background: white; font-size: 1.08rem; line-height: 1.9; }
+        .message strong { color: #dd7189; }
+        button { border: 0; border-radius: 999px; padding: 13px 25px; color: white; background: linear-gradient(135deg, #ff9b9b, #f6bd76); box-shadow: 0 6px 0 #e48282; cursor: pointer; font: 700 1rem 'Noto Sans TC', sans-serif; transition: transform .2s ease, box-shadow .2s ease; }
+        button:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #e48282; }
+        button:active { transform: translateY(3px); box-shadow: 0 3px 0 #e48282; }
+        @keyframes arrive { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+        @keyframes bob { 50% { transform: translateY(-16px) rotate(12deg); } }
+        @media (max-width: 520px) { .page { padding: 15px; } .card { border-radius: 25px; } .badge { top: 15px; right: 15px; } }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <article class="card">
+            <div class="badge">同學限定</div>
+            <p class="eyebrow">今日份的問候</p>
+            <h1>給 jyun</h1>
+            <p class="subtitle">Hello～謝謝你教我寫 code！</p>
+            <div class="cat" aria-label="一隻可愛的橘貓"><div class="face"><span class="nose"></span></div></div>
+            <p class="message" id="message">嗨 <strong>jyun</strong>，<br>謝謝你耐心教我寫 code！</p>
+            <button id="surprise" type="button">抽一句感謝小語 ✨</button>
+        </article>
+    </main>
+    <script>
+        const messages = ['謝謝你讓寫 code 變得沒有那麼難！', '有你教我，我也更敢挑戰新的程式！', '下次換我請你喝飲料，感謝大神同學！'];
+        const message = document.querySelector('#message');
+        const surprise = document.querySelector('#surprise');
+        let messageIndex = 0;
+        surprise.addEventListener('click', () => {
+            messageIndex = (messageIndex + 1) % messages.length;
+            message.innerHTML = `<strong>jyun</strong>，<br>${messages[messageIndex]}`;
+        });
+    </script>
+</body>
+</html>
